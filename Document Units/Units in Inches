@@ -1,0 +1,33 @@
+' Purpose: Modify \System Options\Document Properties\Units\Length\Decimals\
+' to ".1234"
+
+' Precondition
+' Have Assembly or Part open
+
+' Postcondition
+' Document will use 4 decimal places for length
+
+' Setup
+Dim swApp As Object
+Dim Part As Object
+Dim boolstatus As Boolean
+Dim longstatus As Long, longwarnings As Long
+
+' Set active part as object
+Sub main()
+Set swApp = Application.SldWorks
+Set Part = swApp.ActiveDoc
+Dim myModelView As Object
+Set myModelView = Part.ActiveView
+myModelView.FrameState = swWindowState_e.swWindowMaximized
+
+' Modify Document Settings
+boolstatus = Part.Extension.SetUserPreferenceInteger(swUserPreferenceIntegerValue_e.swUnitSystem, 0, swUnitSystem_e.swUnitSystem_IPS)
+boolstatus = Part.Extension.SetUserPreferenceInteger(swUserPreferenceIntegerValue_e.swUnitsLinearDecimalPlaces, 0, 4)
+boolstatus = Part.EditRebuild3()
+
+' Save
+Dim swErrors As Long
+Dim swWarnings As Long
+boolstatus = Part.Save3(1, swErrors, swWarnings)
+End Sub
