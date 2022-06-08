@@ -1,0 +1,41 @@
+' Note: Original purpose is to create the property Memo1 for use with Global Shop Solutions ERP system
+
+' Purpose: Add Memo1 to the Configuration File Properties
+
+Option Explicit
+
+Dim swApp           As SldWorks.SldWorks
+
+Dim swModel         As SldWorks.ModelDoc2
+
+Dim swConfigMgr     As SldWorks.ConfigurationManager
+
+Dim swConfig        As SldWorks.Configuration
+
+Dim FILENAME        As String
+
+Dim ConfigName As String
+
+Sub main()
+
+Set swApp = Application.SldWorks
+
+Set swModel = swApp.ActiveDoc
+
+Set swConfigMgr = swModel.ConfigurationManager
+
+Set swConfig = swConfigMgr.ActiveConfiguration
+
+If swModel.CustomInfo2(swConfig.Name, "Memo1") = "" Then
+
+swModel.AddCustomInfo3 swConfig.Name, "Memo1", swCustomInfoText, """BOM Thickness@SW"" ""SW-Material"""
+
+Else
+
+swModel.CustomInfo2(swConfig.Name, "Memo1") = """BOM Thickness@SW"" ""SW-Material"""
+
+swModel.FileSummaryInfo
+
+End If
+
+End Sub
