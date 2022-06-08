@@ -1,0 +1,36 @@
+' Note: Original purpose is to create the property Memo1 for use with Global Shop Solutions ERP system
+
+' Purpose: Add "Memo1" to file properties, and set to use BOM Thickness and Material as text
+
+' Precondition: Have a part open, add BOM Thickness to Equation folder/manager, have SW Material defined
+
+' Postcondition: Existing Memo1 will be deleted (if exists).
+' New Memo1 should evaluate to the thickness and material of the part
+' File Properties window will open for visual verification
+
+' Setup
+Option Explicit
+
+Dim swApp                   As SldWorks.SldWorks
+Dim swModel                 As SldWorks.ModelDoc2
+Dim sFilePath               As String
+Dim sFileName               As String
+
+
+Sub main()
+
+    Set swApp = Application.SldWorks
+    Set swModel = swApp.ActiveDoc
+    sFileName = Mid(swModel.GetPathName, InStrRev(swModel.GetPathName, "\") + 1)
+    sFilePath = swModel.GetPathName
+
+' Properties to delete
+    swModel.DeleteCustomInfo "Memo1"
+            
+' Properties to add
+    swModel.AddCustomInfo2 "Memo1", swCustomInfoText, """BOM Thickness@SW"" ""SW-Material"""
+            
+' Open the Summary Information window
+    swModel.FileSummaryInfo
+
+End Sub
