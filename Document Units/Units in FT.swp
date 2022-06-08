@@ -1,0 +1,18 @@
+` Changes the document units to use FEET and 4 decimal places
+
+Dim swApp As Object
+
+Dim Part As Object
+Dim boolstatus As Boolean
+Dim longstatus As Long, longwarnings As Long
+
+Sub main()
+
+Set swApp = Application.SldWorks
+
+Set Part = swApp.ActiveDoc
+boolstatus = Part.Extension.SetUserPreferenceInteger(swUserPreferenceIntegerValue_e.swUnitSystem, 0, swUnitSystem_e.swUnitSystem_Custom)
+boolstatus = Part.Extension.SetUserPreferenceInteger(swUserPreferenceIntegerValue_e.swUnitsLinear, 0, swLengthUnit_e.swFEET)
+boolstatus = Part.Extension.SetUserPreferenceInteger(swUserPreferenceIntegerValue_e.swUnitsLinearDecimalPlaces, 0, 4)
+boolstatus = Part.EditRebuild3()
+End Sub
