@@ -1,0 +1,35 @@
+'---------------------------------------------------------------------------
+' Preconditions:
+' 1. Open a drawing document.
+'
+' Postconditions:
+' 1. Traverses the views on the current sheet and gets each view's type.
+' 2. Changes each view to use sheet scale.
+'---------------------------------------------------------------------------
+Option Explicit
+Sub main()
+
+    Dim swApp As SldWorks.SldWorks
+    Dim swModel As SldWorks.ModelDoc2
+    Dim swDraw As SldWorks.DrawingDoc
+    Dim swSheet As SldWorks.Sheet
+    Dim swView As SldWorks.View
+    Dim bRet As Boolean
+
+    Set swApp = CreateObject("SldWorks.Application")
+    Set swModel = swApp.ActiveDoc
+    Set swDraw = swModel
+    Set swSheet = swDraw.GetCurrentSheet
+    Set swView = swDraw.GetFirstView
+
+    Debug.Print "File = " & swModel.GetPathName
+    Debug.Print "  " & swSheet.GetName
+
+    While Not swView Is Nothing
+      '  Debug.Print "    " & swView.GetName2 & " [" & swView.Type & "]"
+        swView.PositionLocked = False
+        swView.UseSheetScale = True
+        Set swView = swView.GetNextView
+    Wend
+
+End Sub
