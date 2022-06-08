@@ -1,0 +1,62 @@
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+
+; Purpose: Change Document Propetries \ Annotation Text to SWMono and 0.25in
+
+; "Keyboard Shortcut goes here"::  
+
+SleepDelay1 := 100
+
+Sleep, %SleepDelay1%
+
+Send, ^/
+
+Sleep, 2000
+
+Send, {TAB 2}
+
+Sleep, %SleepDelay1%
+
+Send, {Right}
+
+Sleep, %SleepDelay1%
+
+Send, +{TAB}
+
+Sleep, %SleepDelay1%
+
+Send, {Down}
+
+Sleep, %SleepDelay1%
+
+Send, !f
+
+Sleep, %SleepDelay1%
+
+Send, {TAB}
+
+Sleep, %SleepDelay1%
+
+Send, SWMono
+
+Sleep, %SleepDelay1%
+
+Send, {TAB 3}
+
+Sleep, %SleepDelay1%
+
+Send, 0.25
+
+Sleep, %SleepDelay1%
+
+Send, {Enter}
+
+Sleep, %SleepDelay1%
+
+Send, {Enter}
+
+Sleep, %SleepDelay1%
+
+Return
