@@ -1,0 +1,39 @@
+' Note: Original purpose is to create a global variable that is referenced in the 2D drawing that is forced to use decimal units.
+
+' Purpose: To add the global equation "BOM Thickness" as equal to "Thickness"
+
+' Precondition: Have a Part open
+
+' Postcondition: Global variable "BOM Thickness" will have been created in the Equations folder/manager
+
+' Setup
+
+Option Explicit
+Sub main()
+
+    Dim SwApp           As SldWorks.SldWorks
+    Dim Part            As SldWorks.ModelDoc2
+    Dim swEquationMgr   As SldWorks.EquationMgr
+    Dim longEquation    As Long
+  
+
+    Set SwApp = Application.SldWorks
+    Set Part = SwApp.ActiveDoc
+
+    ' Exit if no Equation Manager, or unable to modify
+    Set swEquationMgr = Part.GetEquationMgr
+    If swEquationMgr Is Nothing Then ErrorMsg SwApp, "Failed to get the equation manager"
+   
+
+    ' Add a global variable assignment at index, 0, to all configurations
+    longEquation = swEquationMgr.Add3(0, """BOM Thickness"" = ""Thickness""", True, swAllConfiguration, Empty)
+    If longEquation <> 0 Then ErrorMsg SwApp, "Failed to add a global variable assignment"
+   
+End Sub
+' Error/Exit function
+Function ErrorMsg(SwApp As Object, Message As String)
+    SwApp.SendMsgToUser2 Message, 0, 0
+    SwApp.RecordLine "'*** WARNING - General"
+    SwApp.RecordLine "'*** " & Message
+    SwApp.RecordLine ""
+End Function
