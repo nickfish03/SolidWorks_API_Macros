@@ -3,8 +3,9 @@
 ' 1. Open a drawing document.
 '
 ' Postconditions:
-' 1. Traverses the views on the current sheet and gets each view's type.
+' 1. Traverses the views on the current sheet and gets each view's type. Outputs into the Immediate Window.
 ' 2. Changes each view to use sheet scale.
+' 3. Unlocks each view, to enable movement.
 '---------------------------------------------------------------------------
 Option Explicit
 Sub main()
