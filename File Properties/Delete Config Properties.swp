@@ -1,0 +1,74 @@
+' Purpose: To clear all properties from active configuration
+
+' Precondition: Have a configuration active
+
+' Postcondition: All properties for the active configuration will be cleared.
+
+' Setup
+
+Option Explicit
+
+Sub main()
+
+    Dim swApp               As SldWorks.SldWorks
+
+    Dim swModel             As SldWorks.ModelDoc2
+
+    Dim swCustPropMgr       As SldWorks.CustomPropertyManager
+
+    Dim vConfigNames        As Variant
+
+    Dim vConfigPropNames    As Variant
+
+    Dim i                   As Integer
+
+    Dim j                   As Integer
+
+    Dim lErrors             As Long
+
+    Dim lWarnings           As Long
+
+    Set swApp = Application.SldWorks
+
+    Set swModel = swApp.ActiveDoc
+
+    If swModel.GetType <> swDocumentTypes_e.swDocASSEMBLY And swModel.GetType <> swDocumentTypes_e.swDocPART Then Exit Sub
+
+    ' Get Config names
+    vConfigNames = swModel.GetConfigurationNames
+
+    ' Loop to clear all configuration properties for active configuration
+    If IsEmpty(vConfigNames) = False Then
+
+        For i = 0 To UBound(vConfigNames)
+
+            Set swCustPropMgr = swModel.Extension.CustomPropertyManager(vConfigNames(i))
+
+            vConfigPropNames = swCustPropMgr.GetNames
+
+            If IsEmpty(vConfigPropNames) = False Then
+
+                For j = 0 To UBound(vConfigPropNames)
+
+                    swCustPropMgr.Delete2 (vConfigPropNames(j))
+
+                Next j
+
+            End If
+
+        Next i
+
+    End If
+
+    ' Rebuild and Save
+    swModel.EditRebuild3
+    
+    If swModel.Save3(swSaveAsOptions_e.swSaveAsOptions_Silent, lErrors, lWarnings) = False Then
+
+        swApp.SendMsgToUser2 "Error: Failed to save model document '" & swModel.GetTitle & "'.", swMessageBoxIcon_e.swMbStop, swMessageBoxBtn_e.swMbOk
+
+        Exit Sub
+
+    End If
+
+End Sub
