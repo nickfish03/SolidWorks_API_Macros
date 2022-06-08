@@ -1,0 +1,65 @@
+' Purpose: To set all 3D text annotations to use Document Font (checkbox)
+
+' Pre-Condition
+' Make one sketch feature active (one left click) in the feature tree
+
+' Post-Condition
+' All text objects in the selected feature will use Document Font (checkbox)
+
+' Setup
+
+Option Explicit
+Dim swApp As SldWorks.SldWorks
+Dim swModel As Object
+Dim swSelMgr As SldWorks.SelectionMgr
+Dim swFeat As SldWorks.Feature
+Dim swSketch As SldWorks.Sketch
+Dim swSketchText As SldWorks.SketchText
+Dim params As Variant
+Dim i As Integer
+Dim swGetFormat As Object
+Dim textformat As Variant
+Dim bRet As Boolean
+
+
+Sub main()
+    Set swApp = Application.SldWorks
+    Set swModel = swApp.ActiveDoc
+    Set swSelMgr = swModel.SelectionManager
+    
+    ' Get the selected feature
+    Set swFeat = swSelMgr.GetSelectedObject6(1, 0)
+    Set swSketch = swFeat.GetSpecificFeature2
+    
+    ' Edit the sketch
+    swModel.EditSketch
+    
+    ' Get the sketch text objects, as an array
+    params = swSketch.GetSketchTextSegments
+    
+    ' set SketchText to the instance(i)
+    Dim iCount1 As Integer
+    iCount1 = UBound(params, 1) - LBound(params, 1)
+    Debug.Print iCount1
+    
+    i = LBound(params, 1)
+     
+    While i <= UBound(params, 1)
+    
+    Set swSketchText = params(i)
+    
+    ' Store current Font format
+    Set swGetFormat = swSketchText.GetTextFormat
+    
+    ' Set Text Object to use Document Format
+    bRet = swSketchText.SetTextFormat(True, swGetFormat)
+    
+    ' repeat procedure for next text object
+    i = i + 1
+    
+    ' no more text objects
+     Wend
+    
+    ' exit EditSketch mode and rebuild
+    swModel.InsertSketch2 True
+End Sub
